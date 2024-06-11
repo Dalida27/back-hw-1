@@ -9,18 +9,17 @@ import { Event } from './types/response';
 
 // this event service instance shows how to create a event, get a event by id, and get all events with in-memory data
 class EventService {
-  
+
+    async getEventsByLocation(location: string): Promise<IEvent[]> {
+      return await EventModel.find({ location: new RegExp(`^${location}$`, 'i') }).exec();
+    }  
+    
     async getEventById(id: string): Promise<IEvent | null> {
       return await EventModel.findById(id).exec();
     }
 
     async getEvents(): Promise<IEvent[]> {
       return await EventModel.find().exec(); 
-    }
-
-    async getEventsByLocation(location: string): Promise<IEvent[]> {
-      const events = await EventModel.find({ location });
-      return events;
     }
 
     async createEvent(createEventDto: CreateEventDto): Promise<IEvent> {
